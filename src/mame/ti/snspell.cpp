@@ -508,8 +508,8 @@ static INPUT_PORTS_START( snspell )
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_Z) PORT_CHAR('Z')
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_QUOTE) PORT_CHAR('\'')
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_0) PORT_NAME("Module Select")
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_DEL) PORT_CODE(KEYCODE_BACKSPACE) PORT_NAME("Erase")
-	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_ENTER) PORT_NAME("Enter")
+	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_DEL) PORT_CODE(KEYCODE_BACKSPACE) PORT_CHAR(8) PORT_NAME("Erase")
+	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_ENTER) PORT_CHAR(13) PORT_NAME("Enter")
 
 	PORT_START("IN.6") // R6
 	PORT_BIT( 0x1f, IP_ACTIVE_HIGH, IPT_UNUSED )
@@ -521,7 +521,7 @@ static INPUT_PORTS_START( snspell )
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_3) PORT_NAME("Repeat")
 	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_4) PORT_NAME("Clue")
 
-	PORT_START("IN.8") // Vss!
+	PORT_START("IN.8") // Vss
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_5) PORT_NAME("Mystery Word")
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_6) PORT_NAME("Secret Code")
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_7) PORT_NAME("Letter")
@@ -534,8 +534,8 @@ static INPUT_PORTS_START( snspellfr ) // French button names
 
 	PORT_MODIFY("IN.5")
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_0) PORT_NAME("Module 2")
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_DEL) PORT_CODE(KEYCODE_BACKSPACE) PORT_NAME("Efface")
-	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_ENTER) PORT_NAME("Essaie")
+	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_DEL) PORT_CODE(KEYCODE_BACKSPACE) PORT_CHAR(8) PORT_NAME("Efface")
+	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_ENTER) PORT_CHAR(13) PORT_NAME("Essaie")
 
 	PORT_MODIFY("IN.7")
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_F2) PORT_NAME(u8"Arrét") // -> auto_power_off
@@ -557,8 +557,8 @@ static INPUT_PORTS_START( snspellit ) // Italian button names
 
 	PORT_MODIFY("IN.5")
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_0) PORT_NAME("Moduli")
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_DEL) PORT_CODE(KEYCODE_BACKSPACE) PORT_NAME("Cancella")
-	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_ENTER) PORT_NAME("Controllo")
+	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_DEL) PORT_CODE(KEYCODE_BACKSPACE) PORT_CHAR(8) PORT_NAME("Cancella")
+	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_ENTER) PORT_CHAR(13) PORT_NAME("Controllo")
 
 	PORT_MODIFY("IN.7")
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_F2) PORT_NAME("Stop") // -> auto_power_off
@@ -599,7 +599,7 @@ static INPUT_PORTS_START( snspellsp ) // Spanish button names, different alphabe
 
 	PORT_START("IN.3") // R3
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_N) PORT_CHAR('N')
-	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_COLON) PORT_NAME(u8"Ñ")
+	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_COLON) PORT_CHAR(U'Ñ')
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_O) PORT_CHAR('O')
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_P) PORT_CHAR('P')
 	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_Q) PORT_CHAR('Q')
@@ -616,7 +616,7 @@ static INPUT_PORTS_START( snspellsp ) // Spanish button names, different alphabe
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_X) PORT_CHAR('X')
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_Y) PORT_CHAR('Y')
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_Z) PORT_CHAR('Z')
-	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_ENTER) PORT_NAME("Entra")
+	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_ENTER) PORT_CHAR(13) PORT_NAME("Entra")
 
 	PORT_START("IN.6") // R6
 	PORT_BIT( 0x1f, IP_ACTIVE_HIGH, IPT_UNUSED )
@@ -625,10 +625,10 @@ static INPUT_PORTS_START( snspellsp ) // Spanish button names, different alphabe
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_QUOTE) PORT_CHAR('\'') PORT_NAME("Acento")
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_1) PORT_CODE(KEYCODE_HOME) PORT_NAME("Listo")
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_2) PORT_NAME("Programa")
-	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_DEL) PORT_CODE(KEYCODE_BACKSPACE) PORT_NAME("Borra")
+	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_DEL) PORT_CODE(KEYCODE_BACKSPACE) PORT_CHAR(8) PORT_NAME("Borra")
 	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_4) PORT_NAME("Repite")
 
-	PORT_START("IN.8") // Vss!
+	PORT_START("IN.8") // Vss
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_5) PORT_NAME("Otra Vez")
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_6) PORT_NAME("Palabra Secreta")
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_7) PORT_NAME("Dilo")
@@ -1161,24 +1161,24 @@ ROM_END
 *******************************************************************************/
 
 //    YEAR  NAME        PARENT    COMPAT  MACHINE       INPUT       CLASS          INIT           COMPANY, FULLNAME, FLAGS
-COMP( 1980, snspell,    0,        0,      sns_tmc0281,  snspell,    snspell_state, init_snspell,  "Texas Instruments", "Speak & Spell (US, 1980 version)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND )
-COMP( 1978, snspellua,  snspell,  0,      sns_tmc0281,  snspell,    snspell_state, init_snspell,  "Texas Instruments", "Speak & Spell (US, 1978 version)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND )
-COMP( 1981, snspellub,  snspell,  0,      sns_tmc0281d, snspell,    snspell_state, init_snspell,  "Texas Instruments", "Speak & Spell (US, 1981 version)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND ) // less speech data
-COMP( 1978, snspellp,   snspell,  0,      sns_tmc0281,  snspell,    snspell_state, init_snspell,  "Texas Instruments", "Speak & Spell (US, patent)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND )
-COMP( 1978, snspelluk,  snspell,  0,      sns_tmc0281,  snspell,    snspell_state, init_snspell,  "Texas Instruments", "Speak & Spell (UK, 1978 version)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND )
-COMP( 1981, snspelluka, snspell,  0,      sns_cd2801,   snspell,    snspell_state, init_snspell,  "Texas Instruments", "Speak & Spell (UK, 1981 version)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND ) // less speech data
-COMP( 1980, snspelljp,  snspell,  0,      sns_tmc0281,  snspell,    snspell_state, init_snspell,  "Texas Instruments", "Speak & Spell (Japan)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND ) // speaks English
-COMP( 1980, snspellsp,  snspell,  0,      snspellsp,    snspellsp,  snspell_state, init_snspell,  "Texas Instruments", "Speak & Spell (Spanish, prototype)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND )
-COMP( 1981, snspellfr,  snspell,  0,      sns_cd2801,   snspellfr,  snspell_state, init_snspell,  "Texas Instruments", u8"La Dictée Magique (France)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND )
-COMP( 1983, snspellit,  snspell,  0,      snspellit,    snspellit,  snspell_state, init_snspell,  "Texas Instruments / Clementoni", "Grillo Parlante (Italy)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND )
+SYST( 1980, snspell,    0,        0,      sns_tmc0281,  snspell,    snspell_state, init_snspell,  "Texas Instruments", "Speak & Spell (US, 1980 version)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND )
+SYST( 1978, snspellua,  snspell,  0,      sns_tmc0281,  snspell,    snspell_state, init_snspell,  "Texas Instruments", "Speak & Spell (US, 1978 version)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND )
+SYST( 1981, snspellub,  snspell,  0,      sns_tmc0281d, snspell,    snspell_state, init_snspell,  "Texas Instruments", "Speak & Spell (US, 1981 version)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND ) // less speech data
+SYST( 1978, snspellp,   snspell,  0,      sns_tmc0281,  snspell,    snspell_state, init_snspell,  "Texas Instruments", "Speak & Spell (US, patent)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND )
+SYST( 1978, snspelluk,  snspell,  0,      sns_tmc0281,  snspell,    snspell_state, init_snspell,  "Texas Instruments", "Speak & Spell (UK, 1978 version)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND )
+SYST( 1981, snspelluka, snspell,  0,      sns_cd2801,   snspell,    snspell_state, init_snspell,  "Texas Instruments", "Speak & Spell (UK, 1981 version)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND ) // less speech data
+SYST( 1980, snspelljp,  snspell,  0,      sns_tmc0281,  snspell,    snspell_state, init_snspell,  "Texas Instruments", "Speak & Spell (Japan)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND ) // speaks English
+SYST( 1980, snspellsp,  snspell,  0,      snspellsp,    snspellsp,  snspell_state, init_snspell,  "Texas Instruments", "Speak & Spell (Spanish, prototype)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND )
+SYST( 1981, snspellfr,  snspell,  0,      sns_cd2801,   snspellfr,  snspell_state, init_snspell,  "Texas Instruments", u8"La Dictée Magique (France)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND )
+SYST( 1983, snspellit,  snspell,  0,      snspellit,    snspellit,  snspell_state, init_snspell,  "Texas Instruments / Clementoni", "Grillo Parlante (Italy)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND )
 
-COMP( 1980, snmath,     0,        0,      snmath,       snmath,     snspell_state, empty_init,    "Texas Instruments", "Speak & Math (US, 1980 version)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND )
-COMP( 1984, snmatha,    snmath,   0,      snmath,       snmath,     snspell_state, empty_init,    "Texas Instruments", "Speak & Math (US, 1984 version)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND ) // less speech data
-COMP( 1980, snmathp,    snmath,   0,      snmath,       snmath,     snspell_state, empty_init,    "Texas Instruments", "Speak & Math (US, patent)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND | MACHINE_IS_INCOMPLETE )
+SYST( 1980, snmath,     0,        0,      snmath,       snmath,     snspell_state, empty_init,    "Texas Instruments", "Speak & Math (US, 1980 version)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND )
+SYST( 1984, snmatha,    snmath,   0,      snmath,       snmath,     snspell_state, empty_init,    "Texas Instruments", "Speak & Math (US, 1984 version)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND ) // less speech data
+SYST( 1980, snmathp,    snmath,   0,      snmath,       snmath,     snspell_state, empty_init,    "Texas Instruments", "Speak & Math (US, patent)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND | MACHINE_IS_INCOMPLETE )
 
-COMP( 1980, snread,     0,        0,      snread,       snread,     snspell_state, init_snspell,  "Texas Instruments", "Speak & Read (US)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND )
+SYST( 1980, snread,     0,        0,      snread,       snread,     snspell_state, init_snspell,  "Texas Instruments", "Speak & Read (US)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND )
 
-COMP( 1979, lantrans,   0,        0,      lantrans,     lantrans,   snspell_state, init_lantrans, "Texas Instruments", "Language Translator", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND )
-COMP( 1979, lantransp,  lantrans, 0,      lantrans,     lantrans,   snspell_state, init_lantrans, "Texas Instruments", "Language Translator (patent)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND | MACHINE_NOT_WORKING )
+SYST( 1979, lantrans,   0,        0,      lantrans,     lantrans,   snspell_state, init_lantrans, "Texas Instruments", "Language Translator", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND )
+SYST( 1979, lantransp,  lantrans, 0,      lantrans,     lantrans,   snspell_state, init_lantrans, "Texas Instruments", "Language Translator (patent)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND | MACHINE_NOT_WORKING )
 
-COMP( 1980, lanteach,   0,        0,      lanteach,     lantrans,   snspell_state, init_lantrans, "Texas Instruments", "Language Teacher", MACHINE_SUPPORTS_SAVE | MACHINE_NO_SOUND_HW )
+SYST( 1980, lanteach,   0,        0,      lanteach,     lantrans,   snspell_state, init_lantrans, "Texas Instruments", "Language Teacher", MACHINE_SUPPORTS_SAVE | MACHINE_NO_SOUND_HW )

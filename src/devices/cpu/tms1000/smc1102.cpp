@@ -5,7 +5,8 @@
   Suwa Seikosha (now Seiko Epson) SMC1102, SMC1112
 
 SMC1102 is a CMOS MCU based on TMS1100, keeping the same ALU and opcode mnemonics.
-They added a timer, interrupts, and a built-in LCD controller.
+The stack(CALL/RETN) works a bit differently. They also added a timer, interrupts,
+and a built-in LCD controller.
 
 In the USA, it was marketed by S-MOS Systems, an affiliate of Seiko Group.
 
@@ -18,9 +19,7 @@ SMC1112 die notes (SMC1102 is assumed to be the same):
 - no output PLA
 
 TODO:
-- each opcode is 4 cycles instead of 6
-- LCD refresh timing is unknown
-- add timer
+- add (micro)instructions PLA if it turns out it can be customized
 - add halt opcode
 
 */
@@ -61,14 +60,17 @@ void smc1102_cpu_device::device_start()
 {
 	tms1100_cpu_device::device_start();
 
-	m_write_segs.resolve_safe();
-
 	// zerofill
 	memset(m_lcd_ram, 0, sizeof(m_lcd_ram));
 	m_lcd_sr = 0;
 	m_inten = false;
 	m_selin = 0;
 	m_k_line = false;
+
+	m_div = 0;
+	m_timer = 0;
+	m_timeout = false;
+	m_tmset = 0;
 
 	memset(m_stack, 0, sizeof(m_stack));
 	m_sp = 0;
@@ -85,6 +87,11 @@ void smc1102_cpu_device::device_start()
 	save_item(NAME(m_selin));
 	save_item(NAME(m_k_line));
 
+	save_item(NAME(m_div));
+	save_item(NAME(m_timer));
+	save_item(NAME(m_timeout));
+	save_item(NAME(m_tmset));
+
 	save_item(NAME(m_stack));
 	save_item(NAME(m_sp));
 	save_item(NAME(m_pb_stack));
@@ -100,18 +107,19 @@ void smc1102_cpu_device::device_reset()
 
 	m_inten = false;
 	m_selin = 0;
+	m_timeout = false;
 
 	// changed/added fixed instructions (mostly handled in op_extra)
-	m_fixed_decode[0x0a] = F_EXTRA;
-	m_fixed_decode[0x71] = F_EXTRA;
-	m_fixed_decode[0x74] = F_EXTRA;
-	m_fixed_decode[0x75] = F_EXTRA;
-	m_fixed_decode[0x76] = F_RETN;
-	m_fixed_decode[0x78] = F_EXTRA;
-	m_fixed_decode[0x7b] = F_EXTRA;
+	m_fixed_decode[0x0a] = F_EXTRA; // TASR
+	m_fixed_decode[0x71] = F_EXTRA; // HALT
+	m_fixed_decode[0x74] = F_EXTRA; // INTEN
+	m_fixed_decode[0x75] = F_EXTRA; // INTDIS
+	m_fixed_decode[0x76] = F_RETN; // INTRTN
+	m_fixed_decode[0x78] = F_EXTRA; // SELIN
+	m_fixed_decode[0x7b] = F_EXTRA; // TMSET
 
-	m_fixed_decode[0x72] = m_fixed_decode[0x73] = F_EXTRA;
-	m_fixed_decode[0x7c] = m_fixed_decode[0x7d] = F_EXTRA;
+	m_fixed_decode[0x72] = m_fixed_decode[0x73] = F_EXTRA; // TSG
+	m_fixed_decode[0x7c] = m_fixed_decode[0x7d] = F_EXTRA; // "
 }
 
 u32 smc1102_cpu_device::decode_micro(offs_t offset)
@@ -119,28 +127,30 @@ u32 smc1102_cpu_device::decode_micro(offs_t offset)
 	// TCY, YNEC, TCMIY
 	static const u16 micro1[3] = { 0x0402, 0x1204, 0x1032 };
 
-	// 0x20, 0x30, 0x00, 0x70
+	// 0x00, 0x20, 0x30, 0x70
 	static const u16 micro2[0x40] =
 	{
+		0x0904, 0x0898, 0x1104, 0x2821, 0x104a, 0x101a, 0x0909, 0x0849,
+		0x0401, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0404, 0x0000,
+
 		0x0102, 0x0801, 0x0802, 0x1001, 0x306a, 0x303a, 0x2021, 0x2020,
 		0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
 
 		0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
 		0x0e04, 0x0e04, 0x0e04, 0x0e04, 0x0899, 0x0099, 0x0819, 0x0804,
 
-		0x0904, 0x0898, 0x1104, 0x2821, 0x104a, 0x101a, 0x0909, 0x0849,
-		0x0401, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0404, 0x0000,
-
 		0x0519, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0519,
-		0x0000, 0x0519, 0x0519, 0x0000, 0x0000, 0x0000, 0x0519, 0x0419,
+		0x0000, 0x0519, 0x0519, 0x0000, 0x0000, 0x0000, 0x0519, 0x0419
 	};
+
+	static const int micro2h[8] = { 0x00, -1, 0x10, 0x20, -1, -1, -1, 0x30 };
 
 	u16 mask = 0;
 
 	if (offset >= 0x40 && offset < 0x70)
 		mask = micro1[offset >> 4 & 3];
 	else if (offset < 0x80 && (offset & 0xf0) != 0x10)
-		mask = micro2[((offset ^ 0x20) | (offset >> 1 & 0x20)) & 0x3f];
+		mask = micro2[micro2h[offset >> 4] | (offset & 0xf)];
 
 	// does not have M_MTN or M_STSL
 	const u32 md[14] = { M_AUTA, M_AUTY, M_NE, M_C8, M_CIN, M_CKM, M_15TN, M_NATN, M_ATN, M_CKN, M_CKP, M_MTP, M_YTP, M_STO };
@@ -182,11 +192,12 @@ void smc1102_cpu_device::read_opcode()
 	}
 
 	// check interrupts (blocked after INTEN)
-	if (m_inten && m_opcode != 0x74)
+	if (m_opcode != 0x74)
 	{
-		bool taken = (m_selin & 2) ? false : m_k_line;
+		const bool taken = (m_selin & 2) ? m_timeout : m_k_line;
+		m_timeout = false;
 
-		if (taken)
+		if (m_inten && taken)
 		{
 			interrupt();
 			return;
@@ -219,20 +230,67 @@ void smc1102_cpu_device::interrupt()
 	m_inten = false;
 }
 
+void smc1102_cpu_device::execute_run()
+{
+	while (m_icount > 0)
+	{
+		m_icount--;
+
+		// decrement timer
+		m_div = (m_div + 1) & 0x1fff;
+		const u16 tmask = (m_selin & 1) ? 0x1ff : 0x1fff;
+		if ((m_div & tmask) == 0)
+		{
+			m_timer = (m_timer - 1) & 0xf;
+			if (m_timer == 0)
+			{
+				m_timer = m_tmset;
+				m_timeout = true;
+			}
+		}
+
+		// overall, LCD refresh rate is 64Hz
+		if ((m_div & 0x1ff) == 0)
+		{
+			for (int i = 0; i < 4; i++)
+				m_write_segs(i, m_lcd_ram[i]);
+		}
+
+		// 4 cycles per opcode instead of 6
+		switch (m_subcycle)
+		{
+			case 2:
+				execute_one(2);
+				execute_one(3);
+				break;
+
+			case 3:
+				execute_one(4);
+				execute_one(5);
+				break;
+
+			default:
+				execute_one(m_subcycle);
+				break;
+		}
+		m_subcycle = (m_subcycle + 1) & 3;
+	}
+}
+
 
 // opcode deviations
 void smc1102_cpu_device::op_call()
 {
 	// CALL: call subroutine
-	if (!m_status)
-		return;
+	if (m_status)
+	{
+		m_stack[m_sp] = m_ca << 10 | m_pa << 6 | m_pc;
+		m_sp = (m_sp + 1) % m_stack_levels;
 
-	m_stack[m_sp] = m_ca << 10 | m_pa << 6 | m_pc;
-	m_sp = (m_sp + 1) % m_stack_levels;
-
-	m_pc = m_opcode & m_pc_mask;
-	m_pa = m_pb;
-	m_ca = m_cb;
+		m_pc = m_opcode & m_pc_mask;
+		m_pa = m_pb;
+		m_ca = m_cb;
+	}
 }
 
 void smc1102_cpu_device::op_retn()
@@ -255,7 +313,6 @@ void smc1102_cpu_device::op_tsg()
 {
 	// TSG: transfer LCD S/R to RAM
 	m_lcd_ram[m_opcode & 3] = m_lcd_sr;
-	m_write_segs(m_opcode & 3, m_lcd_sr);
 }
 
 void smc1102_cpu_device::op_intdis()
@@ -279,6 +336,7 @@ void smc1102_cpu_device::op_selin()
 void smc1102_cpu_device::op_tmset()
 {
 	// TMSET: transfer A to timer latch
+	m_tmset = m_a;
 }
 
 void smc1102_cpu_device::op_halt()

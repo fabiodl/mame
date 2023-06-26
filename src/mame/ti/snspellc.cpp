@@ -42,7 +42,7 @@ regular Speak & Math. No known external modules were released.
 ================================================================================
 
 Touch & Tell (US), 1981
-- MCU: CD8012, label CD8012NL (die label: 1100G, CD8012)
+- MCU: CD8012, label CD8012NL (die label: 1100G CD8012)
 - TMS51xx: CD2802
 - VSM: 4KB CD2610
 - notes: MCU is TMS1100 instead of TMS0270. CD8010 is seen in some devices
@@ -490,7 +490,7 @@ static INPUT_PORTS_START( snspellc )
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_V) PORT_CHAR('V')
 
 	PORT_START("IN.4") // R4
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_DEL) PORT_CODE(KEYCODE_BACKSPACE) PORT_NAME("Erase")
+	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_DEL) PORT_CODE(KEYCODE_BACKSPACE) PORT_CHAR(8) PORT_NAME("Erase")
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_E) PORT_CHAR('E')
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_N) PORT_CHAR('N')
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_W) PORT_CHAR('W')
@@ -508,7 +508,7 @@ static INPUT_PORTS_START( snspellc )
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_Y) PORT_CHAR('Y')
 
 	PORT_START("IN.7") // R7
-	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_ENTER) PORT_NAME("Enter")
+	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_ENTER) PORT_CHAR(13) PORT_NAME("Enter")
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_H) PORT_CHAR('H')
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_Q) PORT_CHAR('Q')
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_Z) PORT_CHAR('Z')
@@ -519,7 +519,7 @@ static INPUT_PORTS_START( snspellc )
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_R) PORT_CHAR('R')
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_QUOTE) PORT_CHAR('\'')
 
-	PORT_START("IN.9") // Vss!
+	PORT_START("IN.9") // Vss
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_KEYBOARD ) PORT_CODE(KEYCODE_5) PORT_CODE(KEYCODE_F1) PORT_NAME("Spell/On") PORT_CHANGED_MEMBER(DEVICE_SELF, snspellc_state, power_on, 0)
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_UNUSED )
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_CUSTOM ) // speech chip data
@@ -583,7 +583,7 @@ static INPUT_PORTS_START( mathsmag )
 	PORT_START("IN.8") // R8
 	PORT_BIT( 0x0f, IP_ACTIVE_HIGH, IPT_UNUSED )
 
-	PORT_START("IN.9") // Vss!
+	PORT_START("IN.9") // Vss
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_KEYPAD ) PORT_CODE(KEYCODE_F1) PORT_NAME("Marche / Calcule") PORT_CHANGED_MEMBER(DEVICE_SELF, snspellc_state, power_on, 0)
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_KEYPAD ) PORT_CODE(KEYCODE_F2) PORT_NAME(u8"Arrét") // -> auto_power_off
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_UNUSED )
@@ -648,7 +648,7 @@ static INPUT_PORTS_START( tntell )
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_KEYPAD ) PORT_CODE(KEYCODE_M) PORT_NAME("Grid 6-4")
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_KEYPAD ) PORT_CODE(KEYCODE_L) PORT_NAME("Grid 6-3")
 
-	PORT_START("IN.9") // Vss!
+	PORT_START("IN.9") // Vss
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_UNUSED )
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_KEYPAD ) PORT_CODE(KEYCODE_STOP) PORT_CODE(KEYCODE_F1) PORT_NAME("Grid 6-6 (On)") PORT_CHANGED_MEMBER(DEVICE_SELF, tntell_state, power_on, 0)
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_CUSTOM ) // speech chip data
@@ -873,16 +873,16 @@ ROM_END
     Drivers
 *******************************************************************************/
 
-//    YEAR  NAME       PARENT    COMPAT MACHINE   INPUT     CLASS           INIT           COMPANY, FULLNAME, FLAGS
-COMP( 1982, snspellc,  0,        0,     snspellc, snspellc, snspellc_state, init_snspellc, "Texas Instruments", "Speak & Spell Compact (US, 1982 version)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND )
-COMP( 1981, snspellca, snspellc, 0,     snspellc, snspellc, snspellc_state, init_snspellc, "Texas Instruments", "Speak & Spell Compact (US, 1981 version)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND )
-COMP( 1982, snwrite,   snspellc, 0,     snwrite,  snwrite,  snspellc_state, init_snspellc, "Texas Instruments", "Speak & Write (UK)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND )
+//    YEAR  NAME       PARENT    COMPAT  MACHINE   INPUT     CLASS           INIT           COMPANY, FULLNAME, FLAGS
+SYST( 1982, snspellc,  0,        0,      snspellc, snspellc, snspellc_state, init_snspellc, "Texas Instruments", "Speak & Spell Compact (US, 1982 version)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND )
+SYST( 1981, snspellca, snspellc, 0,      snspellc, snspellc, snspellc_state, init_snspellc, "Texas Instruments", "Speak & Spell Compact (US, 1981 version)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND )
+SYST( 1982, snwrite,   snspellc, 0,      snwrite,  snwrite,  snspellc_state, init_snspellc, "Texas Instruments", "Speak & Write (UK)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND )
 
-COMP( 1982, mathsmag,  0,        0,     mathsmag, mathsmag, snspellc_state, init_snspellc, "Texas Instruments", "Les Maths Magiques (France)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND )
+SYST( 1982, mathsmag,  0,        0,      mathsmag, mathsmag, snspellc_state, init_snspellc, "Texas Instruments", "Les Maths Magiques (France)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND )
 
-COMP( 1981, tntell,    0,        0,     tntell,   tntell,   tntell_state,   init_tntell,   "Texas Instruments", "Touch & Tell (US)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND | MACHINE_CLICKABLE_ARTWORK | MACHINE_REQUIRES_ARTWORK )
-COMP( 1980, tntellp,   tntell,   0,     tntell,   tntell,   tntell_state,   init_tntell,   "Texas Instruments", "Touch & Tell (US, patent)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND | MACHINE_CLICKABLE_ARTWORK | MACHINE_REQUIRES_ARTWORK | MACHINE_NOT_WORKING )
-COMP( 1981, tntelluk,  tntell,   0,     tntell,   tntell,   tntell_state,   init_tntell,   "Texas Instruments", "Touch & Tell (UK)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND | MACHINE_CLICKABLE_ARTWORK | MACHINE_REQUIRES_ARTWORK )
-COMP( 1981, tntellfr,  tntell,   0,     tntell,   tntell,   tntell_state,   init_tntell,   "Texas Instruments", "Le Livre Magique (France)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND | MACHINE_CLICKABLE_ARTWORK | MACHINE_REQUIRES_ARTWORK )
+SYST( 1981, tntell,    0,        0,      tntell,   tntell,   tntell_state,   init_tntell,   "Texas Instruments", "Touch & Tell (US)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND | MACHINE_CLICKABLE_ARTWORK | MACHINE_REQUIRES_ARTWORK )
+SYST( 1980, tntellp,   tntell,   0,      tntell,   tntell,   tntell_state,   init_tntell,   "Texas Instruments", "Touch & Tell (US, patent)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND | MACHINE_CLICKABLE_ARTWORK | MACHINE_REQUIRES_ARTWORK | MACHINE_NOT_WORKING )
+SYST( 1981, tntelluk,  tntell,   0,      tntell,   tntell,   tntell_state,   init_tntell,   "Texas Instruments", "Touch & Tell (UK)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND | MACHINE_CLICKABLE_ARTWORK | MACHINE_REQUIRES_ARTWORK )
+SYST( 1981, tntellfr,  tntell,   0,      tntell,   tntell,   tntell_state,   init_tntell,   "Texas Instruments", "Le Livre Magique (France)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND | MACHINE_CLICKABLE_ARTWORK | MACHINE_REQUIRES_ARTWORK )
 
-COMP( 1982, vocaid,    0,        0,     vocaid,   tntell,   tntell_state,   empty_init,    "Texas Instruments", "Vocaid", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND | MACHINE_REQUIRES_ARTWORK )
+SYST( 1982, vocaid,    0,        0,      vocaid,   tntell,   tntell_state,   empty_init,    "Texas Instruments", "Vocaid", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND | MACHINE_REQUIRES_ARTWORK )

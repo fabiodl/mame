@@ -950,6 +950,7 @@ spu_device::spu_device(const machine_config &mconfig, const char *tag, device_t 
 spu_device::spu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
 	device_t(mconfig, SPU, tag, owner, clock),
 	device_sound_interface(mconfig, *this),
+	m_stream_flags(STREAM_DEFAULT_FLAGS),
 	m_irq_handler(*this),
 	dirty_flags(-1),
 	status_enabled(false),
@@ -961,8 +962,6 @@ spu_device::spu_device(const machine_config &mconfig, const char *tag, device_t 
 
 void spu_device::device_start()
 {
-	m_irq_handler.resolve_safe();
-
 	spu_base_frequency_hz = clock() / 768.0f;
 	generate_linear_rate_table();
 	generate_pos_exp_rate_table();
@@ -1098,7 +1097,8 @@ void spu_device::init_stream()
 {
 	const unsigned int hz=44100;
 
-	m_stream = stream_alloc(0, 2, hz);
+	// TODO: Rewrite SPU stream update code to work such that Taiko no Tatsujin no longer needs synchronous streams
+	m_stream = stream_alloc(0, 2, hz, m_stream_flags);
 
 	rev=new reverb(hz);
 
@@ -2534,6 +2534,13 @@ void spu_device::update_reverb()
 {
 	if (dirty_flags&dirtyflag_reverb)
 	{
+		// TODO: Handle cases where reverb present can't be found better
+		// If a save state is loaded and has reverb values that don't match a preset
+		// then spu_reverb_cfg is never set so the reverb settings won't be the same as
+		// when the save state was created.
+		// This only becomes an issue when loading save states from the command line
+		// because if you load a save state from within MAME it will hold the last used
+		// spu_reverb_cfg and reuse that value.
 		cur_reverb_preset=find_reverb_preset((unsigned short *)&reg[0x1c0]);
 
 		if (cur_reverb_preset==nullptr)
